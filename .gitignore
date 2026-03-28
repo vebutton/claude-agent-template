@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.local
+*.env
+*.pem
+*.key
+secrets/
+
+# Node (if needed)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/settings.json
+
+# Project-specific local-only directories
+collateral/    # customer/sample docs — never commit
+output/        # generated drafts — never commit
+
+# Local-only files
+TODO.md        # ideas backlog, not part of active repo
+*-conversation.md  # voice-to-claude-code scratch pads
