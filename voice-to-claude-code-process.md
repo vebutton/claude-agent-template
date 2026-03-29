@@ -21,25 +21,36 @@ A process for kicking off new agent projects starting from a mobile voice conver
    - Pasting into Word first gives cleaner visual formatting, but `.md` is preferred for portability
    - This file is a working scratch pad — it does NOT go into the repo (gitignore it or keep it local)
 
-4. **Create the project repo**
-   - Create a private GitHub repo for the project
-   - Initialize git locally and connect it
-   - Set up `.gitignore` early — exclude the conversation file, `TODO.md`, secrets, and any other local-only files
+4. **Create the project repo from the template**
+   - Use the Claude agent template repo to bootstrap instantly:
+     ```bash
+     gh repo create my-new-agent \
+       --template vebutton/claude-agent-template \
+       --private --clone
+     ```
+   - This gives you the full scaffold (`.gitignore`, `CLAUDE.md`, `CLAUDE.md.template`,
+     `collateral/`, `output/`, `prompts/`, `src/`, `docs/`) with a clean git history
 
-5. **Open the project in Claude Code (VSCode or CLI)**
-   - Put the `.md` conversation file in your project directory temporarily
-   - Open Claude Code in the same workspace
-   - Reference the file to give Claude Code the full context to work from
+5. **Drop the conversation file into `collateral/`**
+   - Move your `.md` conversation file into the cloned repo's `collateral/` folder
+   - It's already gitignored — safe to leave there as a working reference
 
-6. **Let Claude Code scaffold the project structure**
+6. **Open the project in Claude Code (VSCode or CLI)**
+   - Open Claude Code in the repo directory
+   - Claude Code reads `CLAUDE.md` automatically — the bootstrap checklist tells it
+     to read the conversation and the template, then self-populate `CLAUDE.md`
+
+7. **Claude Code self-orients from the conversation**
    Claude Code will:
-   - Read the conversation and extract requirements
+   - Read `CLAUDE.md` (bootstrap checklist)
+   - Read the conversation file from `collateral/`
+   - Read `CLAUDE.md.template` for the target structure
+   - Rewrite `CLAUDE.md` with the real project content populated from the conversation
    - Save context to its memory system (`~/.claude/projects/.../memory/`) for future sessions
-   - Create a `CLAUDE.md` in the project root — this is the primary persistent context file
    - Create a `docs/` folder with structured requirements documents
    - Create a local `TODO.md` for backlog items not in scope for this repo
 
-7. **Commit only what belongs in the repo**
+8. **Commit only what belongs in the repo**
    What to commit:
    - `CLAUDE.md` — project context, loaded automatically by Claude Code every session
    - `docs/` — structured requirements and specs for the active project only
@@ -77,8 +88,7 @@ Key things to put in `CLAUDE.md`:
 
 ## Future / Optional Enhancements to This Process
 
-- Automate the repo creation step with a shell script or Claude Code hook
-- Add a `CLAUDE.md` template to reuse across new projects
+- Automate repo creation + conversation file placement into a single shell script
 - Explore whether Rovo (Atlassian AI) can complement this workflow for Confluence-heavy projects
 
 ## Editors Tested
