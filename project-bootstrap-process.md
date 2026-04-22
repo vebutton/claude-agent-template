@@ -26,15 +26,14 @@ captures the substance; this workflow turns it into a working repo.
    - Pasting into Word first gives cleaner visual formatting, but `.md` is preferred for portability.
    - This file is a working input — it does NOT stay in the repo long-term (gitignored, see step 8).
 
-4. **Create the project repo from the template**
-   - Use the Claude agent template repo to bootstrap instantly:
+4. **Clone the template locally**
+   - Clone the template repo into a new directory:
      ```bash
-     gh repo create my-new-project \
-       --template vebutton/claude-agent-template \
-       --private --clone
+     git clone https://github.com/vebutton/claude-agent-template.git my-new-project
+     cd my-new-project
      ```
    - This gives you the full scaffold (`.gitignore`, `CLAUDE.md`, `CLAUDE.md.template`,
-     `collateral/`, `output/`, `prompts/`, `src/`, `docs/`) with a clean git history.
+     `collateral/`, `output/`, `prompts/`, `src/`, `docs/`).
 
 5. **Drop the conversation file into `collateral/`**
    - Move your `.md` conversation file into the cloned repo's `collateral/` folder.
@@ -58,7 +57,19 @@ captures the substance; this workflow turns it into a working repo.
    - Stop and ask if any required collateral named in the conversation is missing
    - Report back when bootstrap is complete, before starting any real work
 
-8. **Commit only what belongs in the repo**
+8. **Create a clean repo and make the first commit**
+   - After bootstrap is complete, reset git history so the template scaffolding
+     doesn't carry into the project:
+     ```bash
+     rm -rf .git
+     git init
+     ```
+   - Create the remote repo and push the bootstrapped state as the first commit:
+     ```bash
+     gh repo create my-new-project --private --source . --push
+     ```
+   - This way the project's git history starts clean with the populated files.
+
    What to commit:
    - `CLAUDE.md` — project context, loaded automatically by Claude Code every session
    - `prompts/system_prompt.md` — agent behavior rules (agent projects)
@@ -87,6 +98,8 @@ holds project context. Don't duplicate between them.
 - Requirements docs and code should be version-controlled from day one.
 - A private GitHub repo gives you backup, history, and the ability to work across machines.
 - It keeps each project separate and namespaced correctly.
+- Creating the repo after bootstrap means the first commit is the real project,
+  not the template scaffolding — clean history from the start.
 
 ## Tips
 
