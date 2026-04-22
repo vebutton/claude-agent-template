@@ -2,35 +2,45 @@
 
 > Replace everything in [brackets] before starting. This file is read automatically
 > by Claude Code at the start of every session — keep it accurate and concise.
+>
+> **File roles:** CLAUDE.md (this file) = project context. `prompts/system_prompt.md`
+> = agent behavior rules. Don't duplicate between them.
 
-## Who I Am
-[Your name] — [Role] at [Company]. [One sentence about relevant domain knowledge.]
+## User
+[Your name] — [Role] at [Company]. [One sentence on relevant domain knowledge or seniority.]
 
 ## This Project
 [One paragraph: what this agent/app does, the problem it solves, and who uses it.]
 
-Full requirements: [docs/requirements.md](docs/requirements.md)
+- **Full requirements:** [docs/requirements.md](docs/requirements.md)
+- **Agent behavior rules:** [prompts/system_prompt.md](prompts/system_prompt.md)
+
+## Input / Output
+- **Input:** [What the agent consumes — e.g. Excel file, pasted text, a topic notes file in `collateral/`]
+- **Output:** [What it produces, and where — e.g. filled Excel in `output/`, markdown file in `output/`]
+
+## Interface
+[Claude Code chat / CLI / web app / etc.]
 
 ## Key Integrations
 - Claude API / Claude Code
-- [List MCP servers, APIs, data sources — e.g. Confluence MCP, Jira API]
+- [List MCP servers, APIs, data sources — e.g. Confluence MCP, Jira API. Omit the line entirely if none.]
 
-## Input / Output
-- **Input**: [What does the agent consume? e.g. Excel file, API call, pasted text]
-- **Output**: [What does it produce? e.g. filled Excel, JSON, Slack message]
-
-## Interface
-- [Chat / CLI / Web app / etc.]
-
-## Workflow Reference
-See [voice-to-claude-code-process.md](voice-to-claude-code-process.md) for the
-process used to kick off this project from a voice conversation.
+## How to Work With This User
+[Working preferences Claude Code should honor. Examples: "Ask questions in batches
+of 3–5, not one at a time." "Prefer bullets over prose." "When I say 'tighten,'
+cut length without losing substance." "Confirm before running anything destructive."
+Keep to 3–6 bullets. Delete this section if no preferences apply.]
 
 ---
 
 ## Project Status
-- [ ] Requirements defined
-- [ ] System prompt written (`prompts/system_prompt.md`)
-- [ ] Core scripts written (`src/`)
-- [ ] Tested on real data (`collateral/`)
-- [ ] Phase 2 integrations (e.g. Confluence MCP)
+Ongoing state of the project. Update as work progresses.
+
+- [ ] [First meaningful milestone for this specific project]
+- [ ] [Second milestone]
+- [ ] [Third milestone]
+
+[Example for an agent project: "First end-to-end run on real input", "Output
+validated by intended downstream consumer", "System prompt refined after N sessions",
+"Second integration added (e.g. Confluence MCP)". Delete this example line.]
