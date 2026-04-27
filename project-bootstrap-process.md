@@ -58,30 +58,47 @@ captures the substance; this workflow turns it into a working repo.
    - Stop and ask if any required collateral named in the conversation is missing
    - Report back when bootstrap is complete, before starting any real work
 
-8. **Create a clean repo and make the first commit**
-   - After bootstrap is complete, reset git history so the template scaffolding
-     doesn't carry into the project:
-     ```bash
-     rm -rf .git
-     git init
-     ```
-   - Create the remote repo and push the bootstrapped state as the first commit:
-     ```bash
-     gh repo create my-new-project --private --source . --push
-     ```
-   - This way the project's git history starts clean with the populated files.
+8. **Finalize and ship the repo**
+
+   Bootstrap step 13 in `CLAUDE.md` walks Claude through this on your green-light;
+   the manual flow below is the same thing. Either way, this step is destructive
+   and creates a remote artifact — give Claude (or yourself) explicit go-ahead.
+
+   Pre-cleanup (remove files whose job ended at bootstrap):
+   - `CLAUDE.md.template` — consumed in bootstrap step 6
+   - `.gitkeep` files in any directory that now has real content (e.g. `docs/.gitkeep`
+     once `docs/requirements.md` exists)
+   - For app projects, the `prompts/` directory (already removed in bootstrap step 7)
+
+   Reset git history so the template scaffolding doesn't carry into the project:
+   ```bash
+   rm -rf .git
+   git init
+   git add .
+   git status   # review the staged tree before committing
+   ```
+
+   Review the staged tree and draft the first commit message, then:
+   ```bash
+   git commit -m "<first commit message>"
+   gh repo create my-new-project <--private|--public> --source . --push
+   ```
 
    What to commit:
-   - `CLAUDE.md` — project context, loaded automatically by Claude Code every session
-   - `prompts/system_prompt.md` — agent behavior rules (agent projects)
+   - `CLAUDE.md` — populated project context, loaded by Claude Code every session
+   - `prompts/system_prompt.md` — agent behavior rules (agent projects only)
    - `docs/` — structured requirements and specs
-   - `project-bootstrap-process.md` — this process doc (reusable across projects)
+   - `project-bootstrap-process.md` — this process doc (reusable reference)
+   - `pyproject.toml`, `.python-version`, `uv.lock` (Python projects)
    - Source code as it develops
 
-   What NOT to commit (gitignore):
-   - The raw conversation `.md` file — it's a one-time input; keep a copy in email or elsewhere
-   - `TODO.md` — local backlog for future projects, not part of the active repo
+   What NOT to commit (already gitignored):
+   - The raw conversation `.md` file in `collateral/` — one-time input
+   - `TODO.md` — local backlog, not part of the active repo
    - `.env` / secrets
+
+   After the repo is created, exit this session and start a fresh one in the same
+   directory for project work — the populated `CLAUDE.md` is now the source of truth.
 
 ## Why CLAUDE.md Is the Key File
 
@@ -94,13 +111,16 @@ For agent projects, `prompts/system_prompt.md` is the companion file — it hold
 behavior rules (tone, what the agent refuses, output discipline) while CLAUDE.md
 holds project context. Don't duplicate between them.
 
-## Why a Private Repo
+## Why a GitHub Repo
 
 - Requirements docs and code should be version-controlled from day one.
-- A private GitHub repo gives you backup, history, and the ability to work across machines.
+- GitHub gives you backup, history, and the ability to work across machines.
 - It keeps each project separate and namespaced correctly.
 - Creating the repo after bootstrap means the first commit is the real project,
   not the template scaffolding — clean history from the start.
+
+Visibility (private vs. public) is a per-project decision — roughly half the
+projects in this workflow are public, half private. Choose at repo-create time.
 
 ## Tips
 

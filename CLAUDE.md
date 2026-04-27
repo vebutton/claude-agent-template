@@ -50,13 +50,13 @@ agent until all steps are complete.
 - [ ] **10. Check for required collateral** named in the conversation — templates, reference documents, sample data, anything the agent needs to function. If anything required is missing, **stop and ask the user** before proceeding.
 - [ ] **11. Fetch/read any external references** the conversation points to (URLs, sample outputs, style references). Note observations in `docs/requirements.md` — do not copy content, just note shape, depth, conventions.
 - [ ] **12. Tell the user bootstrap is complete** and summarize: project name, project type (agent/app), what the agent or app does, what you wrote to which files, what (if anything) is still missing. Then wait for direction — do not start the project's real work without explicit go-ahead.
-
-## Post-Bootstrap Process
-
-After bootstrap is complete, the checklist above becomes historical. The user
-should replace this entire "Bootstrap Checklist" and "Post-Bootstrap Process"
-section with project-specific status tracking from `CLAUDE.md.template`'s
-Project Status section.
+- [ ] **13. (Only on the user's explicit "go" / "ship it" / "create the repo") Finalize and ship the repo.** This step is destructive (`rm -rf .git`) and creates a remote artifact — never auto-run.
+  - **Pre-cleanup** — remove bootstrap-only files whose job ended: `CLAUDE.md.template` (consumed in step 6); `.gitkeep` files in any directory that now has real content (e.g. `docs/.gitkeep` once `docs/requirements.md` exists); any other bootstrap-only files added by future template versions.
+  - **Confirm Python tooling** (Python projects only) — `pyproject.toml`, `.python-version`, and `uv.lock` should already exist from step 9. Complete now if missing.
+  - **Reset history and stage** — `rm -rf .git && git init && git add .`. Run `git status` to see the staged tree and draft a first-commit message.
+  - **Stop. Show the user the staged file tree + proposed commit message. Wait for green-light.** Do NOT push without explicit confirmation.
+  - **On confirmation** — `git commit -m "<approved message>"`, then `gh repo create <project-name> <--private|--public> --source . --push`. Confirm visibility (private or public) with the user before issuing the command — the template does not default to either.
+  - **Report and harvest** — give the user the repo URL and confirm the first commit is clean. Then prompt: *"Before you start fresh: did anything in the template friction this bootstrap? This is the moment to capture template improvements while context is fresh."* Then recommend they exit this session and start a new one in the same directory for project work — the populated `CLAUDE.md` is now the source of truth and bootstrap context is no longer needed.
 
 ## Principles for Bootstrap
 
