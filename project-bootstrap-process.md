@@ -52,7 +52,8 @@ captures the substance; this workflow turns it into a working repo.
    - Read the conversation file from `collateral/`
    - Read `CLAUDE.md.template` and `prompts/system_prompt.md` for target structure
    - Rewrite `CLAUDE.md` with real project context populated from the conversation
-   - Write `prompts/system_prompt.md` with the agent's behavior rules (for agent projects)
+   - For agent projects: write `prompts/system_prompt.md` with behavior rules.
+     For app projects: delete the `prompts/` directory entirely.
    - Write `docs/requirements.md` with structured requirements
    - Stop and ask if any required collateral named in the conversation is missing
    - Report back when bootstrap is complete, before starting any real work
@@ -108,6 +109,9 @@ holds project context. Don't duplicate between them.
 - If the conversation was long, just copy the whole thing; more context is better.
 - Keep each repo focused on one agent or app — don't mix projects.
 - `TODO.md` is a great place to capture related ideas that came up but aren't in scope yet.
+- For Python projects, use **pyenv** (interpreter) + **uv** (env/deps). Don't use venv directly,
+  Poetry, Conda, or Pipenv. The template doesn't ship a `pyproject.toml` — create one during
+  bootstrap so each project picks its own Python version and dependencies.
 
 ## Future / Optional Enhancements to This Process
 

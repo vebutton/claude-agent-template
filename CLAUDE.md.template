@@ -4,7 +4,7 @@
 > by Claude Code at the start of every session — keep it accurate and concise.
 >
 > **File roles:** CLAUDE.md (this file) = project context. `prompts/system_prompt.md`
-> = agent behavior rules. Don't duplicate between them.
+> = agent behavior rules (agent projects only). Don't duplicate between them.
 
 ## User
 [Your name] — [Role] at [Company]. [One sentence on relevant domain knowledge or seniority.]
@@ -13,7 +13,7 @@
 [One paragraph: what this agent/app does, the problem it solves, and who uses it.]
 
 - **Full requirements:** [docs/requirements.md](docs/requirements.md)
-- **Agent behavior rules:** [prompts/system_prompt.md](prompts/system_prompt.md)
+- **Agent behavior rules** *(agent projects only — delete this line for apps)*: [prompts/system_prompt.md](prompts/system_prompt.md)
 
 ## Input / Output
 - **Input:** [What the agent consumes — e.g. Excel file, pasted text, a topic notes file in `collateral/`]
@@ -25,6 +25,13 @@
 ## Key Integrations
 - Claude API / Claude Code
 - [List MCP servers, APIs, data sources — e.g. Confluence MCP, Jira API. Omit the line entirely if none.]
+
+## Tech / Tooling
+[Languages, frameworks, key libraries used by this project.]
+
+- **Python projects:** use **pyenv** (interpreter) + **uv** (env/deps). Do NOT use venv directly,
+  Poetry, Conda, or Pipenv. Commit `pyproject.toml`, `.python-version`, and `uv.lock`.
+- [Add other tooling notes here, or delete this section entirely if not relevant.]
 
 ## How to Work With This User
 [Working preferences Claude Code should honor. Examples: "Ask questions in batches
