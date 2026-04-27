@@ -25,12 +25,13 @@ Thumbs.db
 # VSCode
 .vscode/settings.json
 
-# Project-specific local-only directories
-collateral/    # customer/sample docs — never commit
-output/        # generated drafts — never commit
+# Project-specific local-only directories — never commit
+# (customer/sample docs in collateral/; generated drafts in output/)
+collateral/
+output/
 
-# Local-only files
-TODO.md        # ideas backlog, not part of active repo
-*-conversation.md  # voice-to-claude-code scratch pads
-CLAUDE.local.md # claude file used for the meta-project
-learnings.md   # cross-project notes, meta only
+# Local-only files — backlog, scratch pads, meta notes — never commit
+TODO.md
+*-conversation.md
+CLAUDE.local.md
+learnings.md
