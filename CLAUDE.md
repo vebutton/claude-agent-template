@@ -51,9 +51,10 @@ agent until all steps are complete.
 - [ ] **11. Fetch/read any external references** the conversation points to (URLs, sample outputs, style references). Note observations in `docs/requirements.md` — do not copy content, just note shape, depth, conventions.
 - [ ] **12. Tell the user bootstrap is complete** and summarize: project name, project type (agent/app), what the agent or app does, what you wrote to which files, what (if anything) is still missing. Then wait for direction — do not start the project's real work without explicit go-ahead.
 - [ ] **13. (Only on the user's explicit "go" / "ship it" / "create the repo") Finalize and ship the repo.** This step is destructive (`rm -rf .git`) and creates a remote artifact — never auto-run.
-  - **Pre-cleanup** — remove bootstrap-only files whose job ended: `CLAUDE.md.template` (consumed in step 6); `.gitkeep` files in any directory that now has real content (e.g. `docs/.gitkeep` once `docs/requirements.md` exists); any other bootstrap-only files added by future template versions.
+  - **Pre-cleanup** — remove bootstrap-only files whose job ended: `CLAUDE.md.template` (consumed in step 6); `project-bootstrap-process.md` (workflow doc used during bootstrap — origin-history only, not project context); `.gitkeep` files in any directory that now has real content (e.g. `docs/.gitkeep` once `docs/requirements.md` exists); any other bootstrap-only files added by future template versions.
   - **Confirm Python tooling** (Python projects only) — `pyproject.toml`, `.python-version`, and `uv.lock` should already exist from step 9. Complete now if missing.
-  - **Reset history and stage** — `rm -rf .git && git init && git add .`. Run `git status` to see the staged tree and draft a first-commit message.
+  - **Write `README.md`** — every project repo must ship one. Keep it **brief**: one short paragraph on what the project is and who it's for, then a short pointers section linking to detailed docs (`docs/requirements.md`, `CLAUDE.md` for AI-assist context, anything else relevant). Detail lives in those linked files, not in the README. Do NOT mention the bootstrap process, the template, or how the repo originated.
+  - **Reset history and stage** — `rm -rf .git && git init && git add .`. Run `git status` to see the staged tree and draft a first-commit message describing *the project* (e.g. "Initial commit: <one-line project description>"). Do NOT reference the template or the bootstrap process.
   - **Stop. Show the user the staged file tree + proposed commit message. Wait for green-light.** Do NOT push without explicit confirmation.
   - **On confirmation** — `git commit -m "<approved message>"`, then `gh repo create <project-name> <--private|--public> --source . --push`. Confirm visibility (private or public) with the user before issuing the command — the template does not default to either.
   - **Report and harvest** — give the user the repo URL and confirm the first commit is clean. Then prompt: *"Before you start fresh: did anything in the template friction this bootstrap? This is the moment to capture template improvements while context is fresh."* Then recommend they exit this session and start a new one in the same directory for project work — the populated `CLAUDE.md` is now the source of truth and bootstrap context is no longer needed.
@@ -69,3 +70,8 @@ agent until all steps are complete.
 - **Ambiguity is a stop-and-ask signal.** When the conversation is unclear on
   something material (output format, integrations, constraints), surface it
   rather than picking a default silently.
+- **GitHub artifacts are project-facing, not bootstrap-facing.** The README,
+  commit messages, PR descriptions, and any other public-facing text in the
+  downstream repo describe *the project*, not *how it was bootstrapped*. Do not
+  reference the template, the bootstrap process, or that the repo originated from
+  a template — the downstream repo stands on its own.
