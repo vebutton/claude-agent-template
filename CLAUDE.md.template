@@ -51,3 +51,28 @@ Ongoing state of the project. Update as work progresses.
 [Example for an agent project: "First end-to-end run on real input", "Output
 validated by intended downstream consumer", "System prompt refined after N sessions",
 "Second integration added (e.g. Confluence MCP)". Delete this example line.]
+
+---
+
+## Session State
+
+> Forward-looking operating context only. Backward-looking archaeology (what got done
+> thread-by-thread, decisions, commits) lives in `docs/session-state.md` — consult on demand.
+
+**Last:** [One-line headline of the most recent session, for orientation.]
+
+**Open items going into next session:**
+- [Carried + current open items.]
+
+**Task list state:**
+- [In-progress tasks and their status.]
+
+**Next session — pick up here:**
+1. Cold start — re-read CLAUDE.md (and CLAUDE.local.md if present). Consult
+   docs/session-state.md for thread-level archaeology on demand.
+2. [Project-specific first steps.]
+
+**Session continuity:** Next session is a cold start — re-read CLAUDE.md before doing
+anything. Sessions are never re-entered.
+Full archaeology: `docs/session-state.md` — consult when prior-thread depth, decision
+reasoning, or ruled-out paths are needed.
