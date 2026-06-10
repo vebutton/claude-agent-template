@@ -64,10 +64,19 @@ captures the substance; this workflow turns it into a working repo.
    the manual flow below is the same thing. Either way, this step is destructive
    and creates a remote artifact — give Claude (or yourself) explicit go-ahead.
 
+   Pre-flight (do this *before* `rm -rf .git`, so failures surface before history is
+   reset and the commit is made, not after):
+   - Confirm the git commit identity — `git config user.name` / `git config user.email`.
+     In a work context, set a repo-local identity (`git config user.email <work-email>`)
+     before committing rather than silently inheriting personal global config.
+   - `gh auth status` — confirm the active account carries `repo` scope.
+   - For an org repo: check create permission (`gh api user/memberships/orgs/<org>`,
+     inspect `role`); note that `--internal` visibility requires GitHub Enterprise.
+
    Pre-cleanup (remove files whose job ended at bootstrap):
    - `CLAUDE.md.template` — consumed in bootstrap step 6
-   - `.gitkeep` files in any directory that now has real content (e.g. `docs/.gitkeep`
-     once `docs/requirements.md` exists)
+   - `.gitkeep` files in any directory that now has real content (e.g. `src/.gitkeep`
+     once source files exist)
    - For app projects, the `prompts/` directory (already removed in bootstrap step 7)
 
    Reset git history so the template scaffolding doesn't carry into the project:
@@ -96,6 +105,11 @@ captures the substance; this workflow turns it into a working repo.
    - The raw conversation `.md` file in `collateral/` — one-time input
    - `TODO.md` — local backlog, not part of the active repo
    - `.env` / secrets
+
+   If anything in the template made this bootstrap harder than it should have been,
+   capture it in `collateral/bootstrap-friction.md` (gitignored — stays local) using
+   **What hit / Why it's a problem / Suggested fix**, for later harvest back into the
+   template repo.
 
    After the repo is created, exit this session and start a fresh one in the same
    directory for project work — the populated `CLAUDE.md` is now the source of truth.
