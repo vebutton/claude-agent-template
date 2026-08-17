@@ -25,6 +25,9 @@ Thumbs.db
 # VSCode
 .vscode/settings.json
 
+# Claude Code local machine config — personal, never commit
+.claude/settings.local.json
+
 # Project-specific local-only directories — never commit
 # (customer/sample docs in collateral/; generated drafts in output/)
 collateral/

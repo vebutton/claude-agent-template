@@ -14,6 +14,9 @@
 
 - **Full requirements:** [docs/requirements.md](docs/requirements.md)
 - **Agent behavior rules** *(agent projects only — delete this line for apps)*: [prompts/system_prompt.md](prompts/system_prompt.md)
+- **Internal details:** `CLAUDE.local.md` — gitignored, read it every session. *(Holds
+  employer/product names, real end-user names, clusters, credential workflows, dates.
+  Delete this line only if the project genuinely has no sensitive specifics.)*
 
 ## Input / Output
 - **Input:** [What the agent consumes — e.g. Excel file, pasted text, a topic notes file in `collateral/`]
@@ -31,6 +34,10 @@
 
 - **Python projects:** use **pyenv** (interpreter) + **uv** (env/deps). Do NOT use venv directly,
   Poetry, Conda, or Pipenv. Commit `pyproject.toml`, `.python-version`, and `uv.lock`.
+- **Stack deferred?** Say so explicitly: what is undecided, why, and what would settle it.
+  E.g. *"Stack not chosen — viability-research phase; target is likely web + mobile.
+  Revisit once the data-source question is answered."* An explicit deferral beats a
+  silent default.
 - [Add other tooling notes here, or delete this section entirely if not relevant.]
 
 ## How to Work With This User
