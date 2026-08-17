@@ -58,6 +58,7 @@ agent until all steps are complete.
 - [ ] **10. Check for required collateral** named in the conversation — templates, reference documents, sample data, anything the agent needs to function. If anything required is missing, **stop and ask the user** before proceeding.
 - [ ] **11. Fetch/read any external references** the conversation points to (URLs, sample outputs, style references). Note observations in `docs/requirements.md` — do not copy content, just note shape, depth, conventions.
 - [ ] **12. Tell the user bootstrap is complete** and summarize: project name, project type (agent/app), what the agent or app does, what you wrote to which files, what (if anything) is still missing. Then wait for direction — do not start the project's real work without explicit go-ahead.
+  - **Ask for the first concrete objective** — distinct from step 2's "what has changed since the conversation?": *"What is the first concrete objective — the thing that has to work first? And is anything else explicitly secondary to it?"* Priority ordering, must-land-vs-nice-to-have, and "goal A must not be built to depend on goal B" rarely surface in a scoping conversation, but they shape `docs/requirements.md` heavily. Fold the answer into the requirements doc before step 13.
 - [ ] **13. (Only on the user's explicit "go" / "ship it" / "create the repo") Finalize and ship the repo.** This step is destructive (`rm -rf .git`) and creates a remote artifact — never auto-run.
   - **Pre-flight (do this FIRST, before the destructive `rm -rf .git`)** — surface identity and permissions now, so failures surface *before* history is reset and the commit is made, not after:
     - **Git commit identity** — run `git config user.name` and `git config user.email`; show the user who the first commit will be authored as: *"This commit will be authored as `<name> <email>` — confirm, or set a repo-local identity now."* In a work context (a company name in the path, or a company target org), proactively suggest setting a repo-local identity (`git config user.email <work-email>`) before committing, rather than silently inheriting personal global config.
@@ -66,12 +67,17 @@ agent until all steps are complete.
     - **Visibility availability** — `--internal` requires GitHub Enterprise; if the target org is not on Enterprise, surface that before the user picks visibility, not after `gh repo create` fails.
   - **Pre-cleanup** — remove bootstrap-only files whose job ended: `CLAUDE.md.template` (consumed in step 6); `project-bootstrap-process.md` (workflow doc used during bootstrap — origin-history only, not project context); the template's own `README.md` (replaced wholesale by the project README below — delete it, do not edit it in place); `.gitkeep` files in any directory that now has real content (e.g. `src/.gitkeep` once source files exist); any other bootstrap-only files added by future template versions.
   - **Scrub check — run before staging, on every file that will be committed:**
-    - **Bootstrap traces** — `grep -riE 'bootstrap|template' CLAUDE.md docs/ prompts/ 2>/dev/null`. The populated files must carry no bootstrap or template references. Scrub any hits.
+    - **Scaffolding gate (run after `git add`, before `git commit`)** — a file-level check that does not depend on which instruction the session followed:
+      ```bash
+      git diff --cached --name-only | grep -E '^(project-bootstrap-process\.md|CLAUDE\.md\.template|README\.md)$'
+      ```
+      `project-bootstrap-process.md` or `CLAUDE.md.template` in that output means pre-cleanup did not run — **stop and remove them.** A `README.md` hit is only correct if it is the *project* README you wrote below, not the template's; verify, don't assume.
+    - **Bootstrap traces** — `grep -riE 'bootstrap|template' CLAUDE.md docs/ prompts/ 2>/dev/null`. The populated files must carry no bootstrap or template references. Scrub any hits. Expect legitimate false positives on projects that genuinely use templates (email templates, report templates) — judge each hit, don't blanket-scrub.
     - **Sensitive specifics that survived step 6/8 routing** — employer and internal product names, real end-user names and locations, cluster/host names, credentials and token workflows, customer or demo dates. Anything found moves to `CLAUDE.local.md`; the committed file refers to it generically. **If the repo will be public, surface a ship-as-is / redact / stay-private decision to the user — do not decide this silently.**
   - **Confirm tooling** — whatever step 9 decided. For Python projects, `pyproject.toml`, `.python-version`, and `uv.lock` should already exist; complete now if missing. If the stack was deferred, confirm the deferral is recorded in CLAUDE.md rather than silently forgotten.
   - **Write `README.md`** — every project repo must ship one. Keep it **brief**: one short paragraph on what the project is and who it's for, then a short pointers section linking to detailed docs (`docs/requirements.md`, `CLAUDE.md` for AI-assist context, anything else relevant). Detail lives in those linked files, not in the README. Do NOT mention the bootstrap process, the template, or how the repo originated.
   - **Reset history and stage** — `rm -rf .git && git init && git add .`. Run `git status` to see the staged tree and draft a first-commit message describing *the project* (e.g. "Initial commit: <one-line project description>"). Do NOT reference the template or the bootstrap process.
-  - **Stop. Show the user the staged file tree + proposed commit message. Wait for green-light.** Do NOT push without explicit confirmation.
+  - **Stop. Show the user the staged file tree + proposed commit message. Wait for green-light.** Do NOT push without explicit confirmation. Show the message in **full**, not a summary of it — this is the first time the project is stated back concisely enough to react to, and it reliably draws out scope corrections that open-ended questions earlier did not. It is a last-chance scope check, not just message approval. Do not streamline it away.
   - **On confirmation** — `git commit -m "<approved message>"`, then `gh repo create <project-name> <--private|--public> --source . --push`. Confirm visibility (private or public) with the user before issuing the command — the template does not default to either.
   - **Report and harvest** — give the user the repo URL and confirm the first commit is clean. Then prompt: *"Before you start fresh: did anything in the template friction this bootstrap? This is the moment to capture template improvements while context is fresh."* Capture any friction in `collateral/bootstrap-friction.md` (gitignored — stays local for later harvest into the template repo), one entry per item using the structure **What hit** / **Why it's a problem** / **Suggested fix**. Then recommend they exit this session and start a new one in the same directory for project work — the populated `CLAUDE.md` is now the source of truth and bootstrap context is no longer needed.
 
@@ -93,6 +99,11 @@ agent until all steps are complete.
   missing them is a leak.
 - **The conversation is the baseline, not the whole spec.** It captured a moment. Ask
   what has been added or changed since before treating it as complete.
+- **Bootstrap scaffolding is template-repo property. None of it ships downstream.**
+  `project-bootstrap-process.md`, `CLAUDE.md.template`, and the template's own
+  `README.md` exist to run the bootstrap and are deleted in step 13 pre-cleanup.
+  If any instruction anywhere appears to say otherwise, this rule wins — do not
+  adjudicate it mid-ship, and do not guess by precedence.
 - **GitHub artifacts are project-facing, not bootstrap-facing.** The README,
   commit messages, PR descriptions, and any other public-facing text in the
   downstream repo describe *the project*, not *how it was bootstrapped*. Do not

@@ -106,9 +106,16 @@ captures the substance; this workflow turns it into a working repo.
    - For app projects, the `prompts/` directory (already removed in bootstrap step 7)
 
    Scrub check (before staging — the last gate before content becomes public):
+   - Scaffolding gate, after `git add` and before `git commit`:
+     ```bash
+     git diff --cached --name-only | grep -E '^(project-bootstrap-process\.md|CLAUDE\.md\.template|README\.md)$'
+     ```
+     A hit on the first two means pre-cleanup didn't run — stop and remove them. A
+     `README.md` hit is only correct if it's the project's own README, not the template's.
    - `grep -riE 'bootstrap|template' CLAUDE.md docs/ prompts/` — populated files should
      carry no bootstrap or template references. Session State and Project Status written
-     during bootstrap are the usual offenders.
+     during bootstrap are the usual offenders. Legitimate uses of the word "template"
+     (email templates, report templates) are false positives — judge, don't blanket-scrub.
    - Sensitive specifics: employer and internal product names, real end-user names and
      locations, cluster/host names, credentials, customer dates. These belong in
      `CLAUDE.local.md` (gitignored); committed files refer to them generically. For a
@@ -132,11 +139,18 @@ captures the substance; this workflow turns it into a working repo.
    - `CLAUDE.md` — populated project context, loaded by Claude Code every session
    - `prompts/system_prompt.md` — agent behavior rules (agent projects only)
    - `docs/` — structured requirements and specs
-   - `project-bootstrap-process.md` — this process doc (reusable reference)
    - `pyproject.toml`, `.python-version`, `uv.lock` (Python projects)
    - Source code as it develops
 
-   What NOT to commit (already gitignored):
+   What NOT to commit — bootstrap scaffolding (removed in pre-cleanup, NOT gitignored,
+   so nothing catches these automatically):
+   - `project-bootstrap-process.md` — this doc. It is template-repo property and does
+     not ship downstream. A downstream repo carrying it announces that it came from a
+     template, which the template's own principles forbid.
+   - `CLAUDE.md.template` — consumed at bootstrap step 6
+   - The template's `README.md` — replaced by the project's own
+
+   What NOT to commit — already gitignored:
    - The raw conversation `.md` file in `collateral/` — one-time input
    - `TODO.md` — local backlog, not part of the active repo
    - `.env` / secrets
