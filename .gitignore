@@ -33,6 +33,9 @@ Thumbs.db
 collateral/
 output/
 
+# Atlas — internal project overview, contains context that must not be committed
+.atlas/
+
 # Local-only files — backlog, scratch pads, meta notes — never commit
 TODO.md
 *-conversation.md
