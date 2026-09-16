@@ -47,7 +47,7 @@ captures the substance; this workflow turns it into a working repo.
      cd my-new-project
      ```
    - This gives you the full scaffold (`.gitignore`, `CLAUDE.md`, `CLAUDE.md.template`,
-     `collateral/`, `output/`, `prompts/`, `src/`, `docs/`).
+     `RETROFIT.md`, `commands/`, `collateral/`, `output/`, `prompts/`, `src/`, `docs/`).
    - **Do not use GitHub's "Use this template" button, and do not run `gh repo create`
      now.** Both create a remote immediately, which forces the owner/org and visibility
      decision at the moment of least context — and GitHub defaults to your personal
@@ -100,6 +100,8 @@ captures the substance; this workflow turns it into a working repo.
 
    Pre-cleanup (remove files whose job ended at bootstrap):
    - `CLAUDE.md.template` — consumed in bootstrap step 6
+   - `RETROFIT.md` — the retrofit checklist; unused on a bootstrap path, never ships
+   - `commands/` — slash-command sources for `~/.claude/commands/`, not project content
    - The template's `README.md` — replaced wholesale by the project README, not edited
    - `.gitkeep` files in any directory that now has real content (e.g. `src/.gitkeep`
      once source files exist)
@@ -108,9 +110,9 @@ captures the substance; this workflow turns it into a working repo.
    Scrub check (before staging — the last gate before content becomes public):
    - Scaffolding gate, after `git add` and before `git commit`:
      ```bash
-     git diff --cached --name-only | grep -E '^(project-bootstrap-process\.md|CLAUDE\.md\.template|README\.md)$'
+     git diff --cached --name-only | grep -E '^(project-bootstrap-process\.md|CLAUDE\.md\.template|RETROFIT\.md|README\.md|commands/.*)$'
      ```
-     A hit on the first two means pre-cleanup didn't run — stop and remove them. A
+     A hit on anything but `README.md` means pre-cleanup didn't run — stop and remove it. A
      `README.md` hit is only correct if it's the project's own README, not the template's.
    - `grep -riE 'bootstrap|template' CLAUDE.md docs/ prompts/` — populated files should
      carry no bootstrap or template references. Session State and Project Status written
@@ -148,6 +150,8 @@ captures the substance; this workflow turns it into a working repo.
      not ship downstream. A downstream repo carrying it announces that it came from a
      template, which the template's own principles forbid.
    - `CLAUDE.md.template` — consumed at bootstrap step 6
+   - `RETROFIT.md` — retrofit checklist, template-repo property, unused on this path
+   - `commands/` — slash-command sources, installed to `~/.claude/commands/`, not project content
    - The template's `README.md` — replaced by the project's own
 
    What NOT to commit — already gitignored:
@@ -212,6 +216,44 @@ holds project context. Don't duplicate between them.
 
 Visibility (private vs. public) is a per-project decision — roughly half the
 projects in this workflow are public, half private. Choose at repo-create time.
+
+## Retrofitting a Project You Already Started
+
+Sometimes a project gets started without bootstrapping — a quick effort that had to move
+faster than the process. Once that first effort is done, the project still needs the same
+footing: persistent context, a requirements doc, session state it can be exited and
+resumed from, and a clean repo.
+
+`RETROFIT.md` in this repo is the checklist for that. It is bootstrap inverted: the code
+exists and the defining conversation doesn't, so the spec gets reconstructed from the
+artifacts plus an interview rather than distilled from a transcript.
+
+Install the slash command once — it pulls `RETROFIT.md` fresh from the template repo on
+every run, so the installed copy cannot go stale:
+
+```bash
+cp commands/retrofit-project.md ~/.claude/commands/
+```
+
+Then run it from any project directory:
+
+```
+/retrofit-project
+```
+
+Or copy `RETROFIT.md` into the project and tell Claude Code to follow it.
+
+Two things worth knowing before you start it:
+
+- **Phase 0 comes first and stands alone.** It writes `CLAUDE.md` and
+  `docs/session-state.md` so the project can be exited cleanly and resumed. If the session
+  runs out after Phase 0, the project is still recoverable — which is usually the reason a
+  retrofit is needed in the first place.
+- **It only fits a directory whose git history is absent or throwaway.** Phase 4 resets
+  history, same as bootstrap step 13. A clone or fork whose upstream history matters is
+  not a retrofit candidate — bootstrap it as the first action instead.
+
+`RETROFIT.md` is scaffolding, like this doc: it is deleted at ship time and never commits.
 
 ## Tips
 

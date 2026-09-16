@@ -25,12 +25,39 @@ account. The bootstrap process resets git history and creates the remote at ship
 with pre-flight checks for commit identity, `gh` auth scope, org create-permission, and
 visibility. Any remote created before that point is throwaway.
 
+## Retrofitting a project you already started
+
+If a project got started without bootstrapping — a quick effort that had to move faster
+than the process — `RETROFIT.md` puts it on the same footing after the fact. It
+reconstructs the spec from the work that exists plus an interview, rather than from a
+conversation transcript.
+
+Install the slash command once (it pulls the checklist fresh from this repo on every run,
+so it never goes stale):
+
+```bash
+cp commands/retrofit-project.md ~/.claude/commands/
+```
+
+Then run it in any project directory:
+
+```
+/retrofit-project
+```
+
+Its first phase writes `CLAUDE.md` and `docs/session-state.md` so the project can be
+exited and resumed cleanly, and stops there — the rest can run whenever. It suits a
+directory whose git history is absent or throwaway; a fork whose history matters should be
+bootstrapped as the first action instead.
+
 ## What you get
 
 | Path | Role |
 | --- | --- |
 | `CLAUDE.md` | Bootstrap checklist on first run; becomes the project's persistent context after |
 | `CLAUDE.md.template` | Target structure the populated `CLAUDE.md` is written into |
+| `RETROFIT.md` | Checklist for retrofitting a project that was started without bootstrapping |
+| `commands/` | Slash-command sources to install into `~/.claude/commands/` |
 | `prompts/system_prompt.md` | Agent behavior rules — tone, refusals, output discipline (agent projects only) |
 | `docs/session-state.md` | Backward-looking session archaeology; the forward-looking brief lives in `CLAUDE.md` |
 | `collateral/`, `output/`, `src/`, `docs/` | Working directories, gitignored where appropriate |
@@ -43,4 +70,6 @@ picks its own stack during bootstrap, or explicitly defers the decision.
 - [project-bootstrap-process.md](project-bootstrap-process.md) — the full workflow:
   having the conversation, capturing it cleanly, extracting text from decks and email
   threads, and shipping the finished repo.
+- [RETROFIT.md](RETROFIT.md) — the retrofit checklist for in-flight projects, and the
+  principles behind it.
 - `CLAUDE.md` — the bootstrap checklist itself, and the principles behind it.

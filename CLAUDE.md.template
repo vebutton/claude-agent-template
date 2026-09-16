@@ -48,6 +48,24 @@ Keep to 3–6 bullets. Delete this section if no preferences apply.]
 
 ---
 
+## Tracks
+
+> A **track** is a distinct workstream with its own objective. Projects grow by adding
+> tracks, so this section exists from day one even when there is only one — and
+> *"no further tracks yet"* is a valid, expected entry. Do not invent tracks to fill it.
+
+### Track 1 — [Name]
+- **Objective:** [The thing that has to work. This is the first concrete objective.]
+- **Status:** [Not started / In progress / Done]
+- **Depends on:** Nothing — this is the first track.
+
+**Further tracks:** [None yet.] Add each as `### Track N — [Name]` with the same three
+fields. When adding one, state explicitly whether it **may depend on an existing track**
+or **must stand alone** — that constraint is easy to state up front and expensive to
+retrofit once code exists.
+
+---
+
 ## Project Status
 Ongoing state of the project. Update as work progresses.
 
@@ -55,9 +73,10 @@ Ongoing state of the project. Update as work progresses.
 - [ ] [Second milestone]
 - [ ] [Third milestone]
 
-[Example for an agent project: "First end-to-end run on real input", "Output
-validated by intended downstream consumer", "System prompt refined after N sessions",
-"Second integration added (e.g. Confluence MCP)". Delete this example line.]
+[Milestones are progress markers within and across tracks; Tracks above is what the
+project is trying to do. Example for an agent project: "First end-to-end run on real
+input", "Output validated by intended downstream consumer", "System prompt refined after
+N sessions", "Second integration added (e.g. Confluence MCP)". Delete this example line.]
 
 ---
 
