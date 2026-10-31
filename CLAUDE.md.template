@@ -7,16 +7,21 @@
 > = agent behavior rules (agent projects only). Don't duplicate between them.
 
 ## User
-[Your name] — [Role] at [Company]. [One sentence on relevant domain knowledge or seniority.]
+The operator — [role, e.g. "a solutions architect"]. [One sentence on relevant domain
+knowledge or seniority.] Committed files never name the user or their employer: both
+live in `CLAUDE.local.md`, so this file reads correctly in any teammate's session.
 
 ## This Project
 [One paragraph: what this agent/app does, the problem it solves, and who uses it.]
 
 - **Full requirements:** [docs/requirements.md](docs/requirements.md)
+- **Task register:** [TODO.md](TODO.md) — the only durable task list. Read it before
+  planning any work.
 - **Agent behavior rules** *(agent projects only — delete this line for apps)*: [prompts/system_prompt.md](prompts/system_prompt.md)
 - **Internal details:** `CLAUDE.local.md` — gitignored, read it every session. *(Holds
-  employer/product names, real end-user names, clusters, credential workflows, dates.
-  Delete this line only if the project genuinely has no sensitive specifics.)*
+  the user's name and employer, internal product names, real end-user names, clusters,
+  credential workflows, customer-tied dates. Delete this line only if the project
+  genuinely has none.)*
 
 ## Input / Output
 - **Input:** [What the agent consumes — e.g. Excel file, pasted text, a topic notes file in `collateral/`]
@@ -53,30 +58,20 @@ Keep to 3–6 bullets. Delete this section if no preferences apply.]
 > A **track** is a distinct workstream with its own objective. Projects grow by adding
 > tracks, so this section exists from day one even when there is only one — and
 > *"no further tracks yet"* is a valid, expected entry. Do not invent tracks to fill it.
+>
+> Tracks say what the project is trying to do. The work items within and across them
+> live in `TODO.md`. Each track's slug (in parentheses) prefixes its item IDs there:
+> `T-<SLUG>-<nn>`. Slugs are short, uppercase and permanent.
 
-### Track 1 — [Name]
+### Track 1 — [Name] ([SLUG])
 - **Objective:** [The thing that has to work. This is the first concrete objective.]
-- **Status:** [Not started / In progress / Done]
+- **Status:** [Not started / In progress / Done — one line; item detail lives in TODO.md]
 - **Depends on:** Nothing — this is the first track.
 
-**Further tracks:** [None yet.] Add each as `### Track N — [Name]` with the same three
-fields. When adding one, state explicitly whether it **may depend on an existing track**
-or **must stand alone** — that constraint is easy to state up front and expensive to
-retrofit once code exists.
-
----
-
-## Project Status
-Ongoing state of the project. Update as work progresses.
-
-- [ ] [First meaningful milestone for this specific project]
-- [ ] [Second milestone]
-- [ ] [Third milestone]
-
-[Milestones are progress markers within and across tracks; Tracks above is what the
-project is trying to do. Example for an agent project: "First end-to-end run on real
-input", "Output validated by intended downstream consumer", "System prompt refined after
-N sessions", "Second integration added (e.g. Confluence MCP)". Delete this example line.]
+**Further tracks:** [None yet.] Add each as `### Track N — [Name] ([SLUG])` with the same
+three fields, and a matching section in `TODO.md`. When adding one, state explicitly
+whether it **may depend on an existing track** or **must stand alone** — that constraint
+is easy to state up front and expensive to retrofit once code exists.
 
 ---
 
@@ -85,20 +80,22 @@ N sessions", "Second integration added (e.g. Confluence MCP)". Delete this examp
 > Forward-looking operating context only. Backward-looking archaeology (what got done
 > thread-by-thread, decisions, commits) lives in `docs/session-state.md` — consult on demand.
 
+> Task state is not kept here: open items, progress and recurring work live in `TODO.md`.
+
 **Last:** [One-line headline of the most recent session, for orientation.]
-
-**Open items going into next session:**
-- [Carried + current open items.]
-
-**Task list state:**
-- [In-progress tasks and their status.]
 
 **Next session — pick up here:**
 1. Cold start — re-read CLAUDE.md (and CLAUDE.local.md if present). Consult
    docs/session-state.md for thread-level archaeology on demand.
-2. [Project-specific first steps.]
+2. [Item IDs from TODO.md, one line each on why now. Prose is fine where order, a
+   dependency or a pending decision needs explaining, but cite IDs, never positions.]
+
+**Continuity reminders:** [Forward-looking context that isn't a task: gotchas, environment
+quirks, things a cold session would get wrong. Recurring work goes in TODO.md → Standing
+operations, not here. Delete if none.]
 
 **Session continuity:** Next session is a cold start — re-read CLAUDE.md before doing
-anything. Sessions are never re-entered.
+anything. Sessions are never re-entered. End-of-session updates cover three layers: this
+brief, `docs/session-state.md`, and `TODO.md`.
 Full archaeology: `docs/session-state.md` — consult when prior-thread depth, decision
 reasoning, or ruled-out paths are needed.

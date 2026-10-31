@@ -56,6 +56,7 @@ bootstrapped as the first action instead.
 | --- | --- |
 | `CLAUDE.md` | Bootstrap checklist on first run; becomes the project's persistent context after |
 | `CLAUDE.md.template` | Target structure the populated `CLAUDE.md` is written into |
+| `TODO.md` | Task register skeleton — permanent item IDs per track, open questions, standing operations. Committed |
 | `RETROFIT.md` | Checklist for retrofitting a project that was started without bootstrapping |
 | `commands/` | Slash-command sources to install into `~/.claude/commands/` |
 | `prompts/system_prompt.md` | Agent behavior rules — tone, refusals, output discipline (agent projects only) |

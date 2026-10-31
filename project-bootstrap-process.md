@@ -47,7 +47,8 @@ captures the substance; this workflow turns it into a working repo.
      cd my-new-project
      ```
    - This gives you the full scaffold (`.gitignore`, `CLAUDE.md`, `CLAUDE.md.template`,
-     `RETROFIT.md`, `commands/`, `collateral/`, `output/`, `prompts/`, `src/`, `docs/`).
+     `TODO.md`, `RETROFIT.md`, `commands/`, `collateral/`, `output/`, `prompts/`, `src/`,
+     `docs/`).
    - **Do not use GitHub's "Use this template" button, and do not run `gh repo create`
      now.** Both create a remote immediately, which forces the owner/org and visibility
      decision at the moment of least context — and GitHub defaults to your personal
@@ -80,6 +81,8 @@ captures the substance; this workflow turns it into a working repo.
    - For agent projects: write `prompts/system_prompt.md` with behavior rules.
      For app projects: delete the `prompts/` directory entirely.
    - Write `docs/requirements.md` with structured requirements
+   - Populate `TODO.md`, the task register: first items per track, open questions,
+     out-of-scope ideas
    - Stop and ask if any required collateral named in the conversation is missing
    - Report back when bootstrap is complete, before starting any real work
 
@@ -114,13 +117,14 @@ captures the substance; this workflow turns it into a working repo.
      ```
      A hit on anything but `README.md` means pre-cleanup didn't run — stop and remove it. A
      `README.md` hit is only correct if it's the project's own README, not the template's.
-   - `grep -riE 'bootstrap|template' CLAUDE.md docs/ prompts/` — populated files should
-     carry no bootstrap or template references. Session State and Project Status written
-     during bootstrap are the usual offenders. Legitimate uses of the word "template"
+   - `grep -riE 'bootstrap|template' CLAUDE.md TODO.md docs/ prompts/ .claude/` — populated
+     files should carry no bootstrap or template references. Session State and TODO.md
+     written during bootstrap are the usual offenders. Legitimate uses of the word "template"
      (email templates, report templates) are false positives — judge, don't blanket-scrub.
-   - Sensitive specifics: employer and internal product names, real end-user names and
-     locations, cluster/host names, credentials, customer dates. These belong in
-     `CLAUDE.local.md` (gitignored); committed files refer to them generically. For a
+   - Sensitive specifics: your own name, employer and internal product names, real
+     end-user names and locations, cluster/host names, credentials, customer dates. These
+     belong in `CLAUDE.local.md` (gitignored); committed files refer to them generically.
+     Check every committed file, including `TODO.md` and `.claude/` skills and agents. For a
      public repo, decide consciously — ship as-is, redact, or stay private.
 
    Reset git history so the template scaffolding doesn't carry into the project:
@@ -139,6 +143,8 @@ captures the substance; this workflow turns it into a working repo.
 
    What to commit:
    - `CLAUDE.md` — populated project context, loaded by Claude Code every session
+   - `TODO.md` — the task register: items with permanent IDs, open questions, standing
+     operations, unscheduled ideas
    - `prompts/system_prompt.md` — agent behavior rules (agent projects only)
    - `docs/` — structured requirements and specs
    - `pyproject.toml`, `.python-version`, `uv.lock` (Python projects)
@@ -156,7 +162,7 @@ captures the substance; this workflow turns it into a working repo.
 
    What NOT to commit — already gitignored:
    - The raw conversation `.md` file in `collateral/` — one-time input
-   - `TODO.md` — local backlog, not part of the active repo
+   - `CLAUDE.local.md` — your name, employer, hosts, credentials and other specifics
    - `.env` / secrets
 
    If anything in the template made this bootstrap harder than it should have been,
@@ -261,7 +267,8 @@ Two things worth knowing before you start it:
 - You don't need to clean up the conversation — timestamps, filler, etc. are fine; Claude Code can parse it.
 - If the conversation was long, just copy the whole thing; more context is better.
 - Keep each repo focused on one agent or app — don't mix projects.
-- `TODO.md` is a great place to capture related ideas that came up but aren't in scope yet.
+- Related ideas that came up but aren't in scope yet go in `TODO.md` → Unscheduled. They
+  get an ID only when promoted into a track.
 - For Python projects, use **pyenv** (interpreter) + **uv** (env/deps). Don't use venv directly,
   Poetry, Conda, or Pipenv. The template doesn't ship a `pyproject.toml` — create one during
   bootstrap so each project picks its own Python version and dependencies.

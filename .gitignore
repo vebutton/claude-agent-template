@@ -36,8 +36,8 @@ output/
 # Atlas — internal project overview, contains context that must not be committed
 .atlas/
 
-# Local-only files — backlog, scratch pads, meta notes — never commit
-TODO.md
+# Local-only files — scratch pads, meta notes — never commit
+# (TODO.md is NOT here: it is the committed task register)
 *-conversation.md
 CLAUDE.local.md
 learnings.md

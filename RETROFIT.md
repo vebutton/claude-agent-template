@@ -56,7 +56,8 @@ after Phase 0, the project is recoverable.
       *"Full archaeology: `docs/session-state.md` — consult when prior-thread depth,
       decision reasoning, or ruled-out paths are needed."*
       This is a deliberate stub. Phase 1 replaces it. It exists so the session can end
-      safely before the rest of the retrofit runs.
+      safely before the rest of the retrofit runs. List open work in the brief for now;
+      Phase 3.3 moves it into `TODO.md`.
 - [ ] **0.5 Tell the user Phase 0 is done** and that they can exit cleanly now — Phases
       1–4 can run in a later session, and `CLAUDE.md` will orient that session correctly.
 
@@ -88,10 +89,11 @@ after Phase 0, the project is recoverable.
         repos/vebutton/claude-agent-template/contents/CLAUDE.md.template
       ```
       **Route sensitive specifics to `CLAUDE.local.md` at write time** (create it if
-      absent; it is gitignored): employer or company names, internal and unreleased
-      product names, real end-user names and locations, cluster and host names,
-      credential and token workflows, customer or demo dates. Use headed sections —
-      `## Environment / clusters`, `## Credentials & token workflows`,
+      absent; it is gitignored): the user's own name and employer, internal and
+      unreleased product names, real end-user names and locations, cluster and host
+      names, credential and token workflows, customer or demo dates, and requests waiting
+      on named people. Use headed sections — `## User`, `## Environment / clusters`,
+      `## Credentials & token workflows`,
       `## Internal context`, `## Dates`, `## Real names / redaction mapping`. Committed
       files then refer to these generically. Add the pointer line to `CLAUDE.md`.
 - [ ] **1.6 Write `docs/requirements.md`** — input formats, output formats, naming
@@ -112,9 +114,10 @@ The rule: **align the scaffolding closely; leave the substance where it is.**
 
 **Align** (add if missing, conform if present):
 - `docs/` and `docs/session-state.md`
+- `TODO.md` — the committed task register (written in Phase 3.3)
 - `README.md` — project-facing (written properly in Phase 4)
 - `.gitignore` — must cover `collateral/`, `output/`, `CLAUDE.local.md`, `.env*`,
-  secrets, OS cruft, and `.claude/settings.local.json`
+  secrets, OS cruft, and `.claude/settings.local.json`. It must **not** list `TODO.md`.
 - `collateral/` — one-time inputs, gitignored
 - `output/` — generated artifacts, gitignored
 - `CLAUDE.local.md`
@@ -144,7 +147,8 @@ cheapest protection against committing them in Phase 4.
       workstream with its own objective. An in-flight project reaching retrofit has
       completed at least one.
       - Populate the `## Tracks` section carried by `CLAUDE.md.template`. Record the
-        completed work as **Track 1** with its objective and status.
+        completed work as **Track 1** with its objective, status and slug
+        (`### Track 1 — <Name> (<SLUG>)`).
       - Give `docs/requirements.md` per-track sections, so a later track appends instead
         of forcing a rewrite.
       - Ask whether any next tracks are known. ***"None yet" is a valid and expected
@@ -152,6 +156,14 @@ cheapest protection against committing them in Phase 4.
         it. The point is that the project knows more tracks can arrive.
       - Note the rule for future tracks: when one is added, state explicitly whether it
         may depend on an existing track, or must stand alone.
+- [ ] **3.3 Establish the task register.** Write `TODO.md` from the template's skeleton
+      (fetch it like `CLAUDE.md.template` in 1.5, path `contents/TODO.md`), keeping its
+      Rules section as shipped. Move into it: the open work from the Phase 0 brief,
+      anything found in Phase 1.2 that is really a task or open question, and any
+      existing backlog or TODO file. **Propose the migration before writing** — an
+      existing `TODO.md` is merged into the register under the same filename, not
+      replaced. Recurring work becomes Standing operations, not IDs. Replace task lists
+      left in `CLAUDE.md` and docs with ID references or a pointer to the register.
 
 ---
 
@@ -185,19 +197,21 @@ destructive and creates a remote artifact — never auto-run.
         git diff --cached --name-only | grep -E '^(RETROFIT\.md|CLAUDE\.md\.template|project-bootstrap-process\.md)$'
         ```
         Any hit means pre-cleanup did not run — **stop and remove them.**
-      - **Origin traces** — `grep -riE 'retrofit|bootstrap|template' CLAUDE.md docs/ prompts/ README.md 2>/dev/null`.
+      - **Origin traces** — `grep -riE 'retrofit|bootstrap|template' CLAUDE.md TODO.md docs/ prompts/ README.md .claude/ 2>/dev/null`.
         Populated files must carry no trace of how the repo came to exist. Expect
         legitimate false positives on projects that genuinely use templates (email
         templates, report templates) — judge each hit, do not blanket-scrub.
-      - **Sensitive specifics that survived Phase 1 routing** — employer and internal
-        product names, real end-user names and locations, cluster/host names, credentials
-        and token workflows, customer or demo dates. Anything found moves to
+      - **Sensitive specifics that survived Phase 1 routing** — the user's name, employer
+        and internal product names, real end-user names and locations, cluster/host
+        names, credentials and token workflows, customer or demo dates. Check every
+        committed file, including `TODO.md` and anything under `.claude/` (skills,
+        agents, commands). Anything found moves to
         `CLAUDE.local.md`; the committed file refers to it generically. **If the repo will
         be public, surface a ship-as-is / redact / stay-private decision to the user — do
         not decide this silently.**
 - [ ] **Write `README.md`** — brief: one short paragraph on what the project is and who
-      it is for, then a pointers section linking to `docs/requirements.md`, `CLAUDE.md`,
-      and anything else relevant. Detail lives in the linked files. Do **not** mention the
+      it is for, then a pointers section linking to `docs/requirements.md`, `TODO.md`,
+      `CLAUDE.md`, and anything else relevant. Detail lives in the linked files. Do **not** mention the
       retrofit, the template, or how the repo originated.
 - [ ] **Reset history and stage** — `rm -rf .git && git init && git add .` (skip the `rm`
       if there is no `.git`). Run `git status`, then draft a first-commit message
